@@ -6,9 +6,9 @@ We have used Bootstrap CSS framework to create some of the initial UI, but you c
 
 ## Helpful links
 
-[Kisi JS client](https://www.npmjs.com/package/kisi-client)
-[Fetch Groups](https://api.kisi.io/docs#/operations/fetchGroups)
-[Create Group](https://api.kisi.io/docs#/operations/createGroup)
+[Kisi JS client](https://www.npmjs.com/package/kisi-client)  
+[Fetch Groups](https://api.kisi.io/docs#/operations/fetchGroups)  
+[Create Group](https://api.kisi.io/docs#/operations/createGroup)  
 [Debounce](https://lodash.com/docs/4.17.15#debounce)
 
 ## Instructions
