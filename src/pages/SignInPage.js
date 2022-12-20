@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import css from "./SignInPage.module.css";
-import client from "./client";
+import client from "../client";
 
 export default function SignInPage() {
   const [domain, setDomain] = useState("");
@@ -15,7 +15,7 @@ export default function SignInPage() {
     try {
       const res = await client.post("/logins", {
         user: { domain, email, password },
-        login: { type: "device" }
+        login: { type: "device" },
       });
       client.setLoginSecret(res.secret);
       navigate("/groups");
@@ -29,11 +29,11 @@ export default function SignInPage() {
       <h3 className="mt-4 mb-4">Sign In for Kisi Test Task</h3>
       <form className={css.form} onSubmit={onSubmit}>
         <div className="mb-3">
-          <label htmlFor="formEmail" className="form-label">
+          <label htmlFor="formDomain" className="form-label">
             Organization Domain
           </label>
           <input
-            id="formEmail"
+            id="formDomain"
             className="form-control"
             value={domain}
             onChange={(e) => setDomain(e.target.value)}

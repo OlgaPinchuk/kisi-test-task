@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
-import SignInPage from "./SignInPage";
-import GroupsPage from "./GroupsPage";
+import SignInPage from "./pages/SignInPage";
+import GroupsPage from "./pages/GroupsPage";
 
 export default function App() {
   return (
