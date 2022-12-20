@@ -1,13 +1,14 @@
-import { createContext, useReducer, useEffect } from "react";
+import { createContext, useReducer, useMemo } from "react";
 
-import client, { fetchGroups } from "../client";
+import API from "../client";
 
 const initialState = [];
 
-//const initialState = {
-//groups: [],
+// const initialState = {
+// groups: [],
+// pagination: {}
 //  errorMessage: ''
-//};
+// };
 
 const actions = {
   SET_GROUPS: "SET_GROUPS",
@@ -20,7 +21,7 @@ const reducer = (state, action) => {
     case actions.SET_GROUPS:
       return [...action.data];
     case actions.ADD_GROUP:
-      return [...state, action.data];
+      return [action.data, ...state];
     case actions.DELETE_GROUP:
       return state.filter((group) => group.id !== group.data.id);
     default:
@@ -33,28 +34,33 @@ export const GroupsContext = createContext();
 export const GroupsProvider = ({ children }) => {
   const [groups, dispatch] = useReducer(reducer, initialState);
 
-  const value = {
-    // useMemo, groups in deps
-    groups: groups,
-    fetchGroups: () => {
-      api.fetchGroups().then((data) => this.setGroups(data));
-    },
-    setGroups: (data) => {
-      dispatch({ type: actions.SET_GROUPS, data });
-    },
-    addGroup: (groupName) => {
-      dispatch({
-        type: actions.ADD_GROUP,
-        data: {
-          name: groupName,
-          place_id: null,
-        },
-      });
-    },
-    deleteGroup: (data) => {
-      dispatch({ type: actions.DELETE_GROUP, id: data.groupId });
-    },
-  };
+  const value = useMemo(() => {
+    return {
+      groups: groups,
+      setGroups: (data) => {
+        dispatch({ type: actions.SET_GROUPS, data });
+      },
+      async fetchGroups(offset) {
+        try {
+          const data = await API.fetchGroups(offset);
+          console.log({ data });
+          this.setGroups(data.data);
+        } catch (e) {
+          console.error(e);
+        }
+      },
+      createGroup: async (group) => {
+        const data = await API.createGroup(group);
+        dispatch({
+          type: actions.ADD_GROUP,
+          data: data,
+        });
+      },
+      deleteGroup: (data) => {
+        dispatch({ type: actions.DELETE_GROUP, id: data.groupId });
+      },
+    };
+  }, [groups]);
 
   return (
     <GroupsContext.Provider value={value}>{children}</GroupsContext.Provider>

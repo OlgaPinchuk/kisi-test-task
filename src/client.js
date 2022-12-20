@@ -1,16 +1,17 @@
 import KisiClient from "kisi-client";
 
-const authData = {
-  Authorization: process.env.REACT_APP_AUTH_KEY,
-  domain: process.env.REACT_APP_DOMAIN,
-  email: process.env.REACT_APP_EMAIL,
-  password: process.env.REACT_APP_PASSWORD,
-};
+// const authData = {
+//   Authorization: process.env.REACT_APP_AUTH_KEY,
+//   domain: process.env.REACT_APP_DOMAIN,
+//   email: process.env.REACT_APP_EMAIL,
+//   password: process.env.REACT_APP_PASSWORD,
+// };
 
-const path = "groups";
+const LOGIN_PATH = "logins";
+const GROUPS_PATH = "groups";
 
 const client = new KisiClient(); //client.setLoginSecret(res.secret); to Localstorage??
-client.setLoginSecret("e3b66ec6829f90bf519c85439f2eabfe");
+client.setLoginSecret("371199d7e81182c0879fd91b0d45e96c");
 
 // client.signIn(authData).then(() => {
 //   client.get(path).then((path) => console.log(path));
@@ -44,23 +45,28 @@ client.setLoginSecret("e3b66ec6829f90bf519c85439f2eabfe");
 
 // export default api;
 
-export const fetchGroups = async () => {
-  const data = await client.get(path);
+const PAGINATION_LIMIT = 10;
+
+const fetchGroups = async (offset = 0) => {
+  const data = await client.get(GROUPS_PATH, {
+    limit: PAGINATION_LIMIT,
+    offset,
+  });
   return data;
 };
 
-export const createGroup = async (group) => {
-  const data = await client.post(path, group);
+const createGroup = async (group) => {
+  const data = await client.post(GROUPS_PATH, group);
   return data;
 };
 
-export const deleteGroup = async (id) => {
-  const data = await client.delete(`${path}/${id}`, id);
+const deleteGroup = async (id) => {
+  const data = await client.delete(`${GROUPS_PATH}/${id}`, id);
   return data;
 };
 
-export const logIn = async (domain, email, password) => {
-  const res = await client.post("/logins", {
+const logIn = async (domain, email, password) => {
+  const res = await client.post(LOGIN_PATH, {
     user: { domain, email, password },
     login: { type: "device" },
   });
@@ -73,5 +79,4 @@ const API = {
   deleteGroup,
   logIn,
 };
-
-export default client;
+export default API;

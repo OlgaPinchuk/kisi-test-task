@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import css from "./SignInPage.module.css";
-import client from "../client";
+import API from "../client";
 
 export default function SignInPage() {
   const [domain, setDomain] = useState("");
@@ -13,11 +13,8 @@ export default function SignInPage() {
   const onSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await client.post("/logins", {
-        user: { domain, email, password },
-        login: { type: "device" },
-      });
-      client.setLoginSecret(res.secret);
+      await API.logIn(domain, email, password);
+
       navigate("/groups");
     } catch (err) {
       setError(true);
