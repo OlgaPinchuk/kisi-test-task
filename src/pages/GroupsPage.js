@@ -1,4 +1,5 @@
 import { useEffect, useContext } from "react";
+import Spinner from "react-bootstrap/Spinner";
 
 import GroupsList from "../components/GroupsList";
 import PaginationComponent from "../components/PaginationComponent";
@@ -9,7 +10,7 @@ import { GroupsContext } from "../global/context";
 export default function GroupsPage() {
   const groupsData = useContext(GroupsContext);
 
-  const { groups, pagination, offset } = groupsData;
+  const { groups, pagination, offset, loading } = groupsData;
 
   useEffect(() => {
     groupsData.fetchGroups(offset);
@@ -29,11 +30,20 @@ export default function GroupsPage() {
         </div>
       </div>
       <AddGroup offset={offset} />
-      <GroupsList groups={groups} />
-      <PaginationComponent
-        total={pagination.count}
-        itemsPerPage={pagination.limit}
-      />
+
+      {loading ? (
+        <div className="d-flex p-2 justify-content-center m-5 ">
+          <Spinner animation="border" variant="primary" />
+        </div>
+      ) : (
+        <>
+          <GroupsList groups={groups} />
+          <PaginationComponent
+            total={pagination.count}
+            itemsPerPage={pagination.limit}
+          />
+        </>
+      )}
     </div>
   );
 }

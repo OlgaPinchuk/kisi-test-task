@@ -2,7 +2,7 @@ export default function GroupsList({ groups, onDelete }) {
   if (!groups.length) return null;
 
   return (
-    <ul className="list-group">
+    <ul className="list-group mt-2">
       {groups.map((item) => (
         <li
           key={item.id}
