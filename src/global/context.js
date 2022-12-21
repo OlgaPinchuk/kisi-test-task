@@ -42,8 +42,9 @@ export const GroupsProvider = ({ children }) => {
       async createGroup(group) {
         try {
           dispatch({ type: actions.SET_LOADING });
-          await API.createGroup(group);
+          const response = await API.createGroup(group);
           this.fetchGroups(calculatePaginationOffset(currentPage));
+          return response;
         } catch (e) {
           dispatch({ type: actions.SET_ERROR, errorMessage: e.reason });
           return;
@@ -55,8 +56,11 @@ export const GroupsProvider = ({ children }) => {
           this.fetchGroups(calculatePaginationOffset(page));
           dispatch({ type: actions.SET_PAGE, payload: { page } });
         } catch (e) {
-          dispatch({ type: actions.SET_ERROR, errorMessage: e.reason });
+          // dispatch({ type: actions.SET_ERROR, errorMessage: e.reason });
         }
+      },
+      setError(errorMessage) {
+        dispatch({ type: actions.SET_ERROR, errorMessage });
       },
       deleteGroup: (data) => {
         dispatch({ type: actions.DELETE_GROUP, id: data.groupId });

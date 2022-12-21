@@ -1,48 +1,28 @@
-import Button from "react-bootstrap/Button";
-import Modal from "react-bootstrap/Modal";
+import { useState } from "react";
 
-export default function Confirmation({
-  children,
-  title,
-  buttonTitle,
-  onSave,
+import Alert from "react-bootstrap/Alert";
+// import Button from "react-bootstrap/Button";
+
+export default function CustomAlert({
+  variant,
+  dismissible,
+  message,
   onClose,
-  okLabel,
-  cancelLabel,
 }) {
-  const [show, setShow] = useState(false);
+  // const [show, setShow] = useState(false);
 
-  const handleShow = () => setShow(true);
-
-  const handleClose = () => {
-    onClose();
-    setShow(false);
-  };
-
-  const handleSave = () => {
-    onSave();
-    setShow(false);
-  };
+  // function handleOpen() {
+  //   setShow(false);
+  // }
+  // function handleClose() {
+  //   setShow(false);
+  // }
 
   return (
-    <>
-      <Button variant="primary" onClick={handleShow}>
-        {buttonTitle}
-      </Button>
-      <Modal show={show} onHide={handleClose}>
-        <Modal.Header closeButton>
-          <Modal.Title>{title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>{children}</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            {cancelLabel}
-          </Button>
-          <Button variant="primary" onClick={handleSave}>
-            {okLabel}
-          </Button>
-        </Modal.Footer>
-      </Modal>
-    </>
+    <Alert variant={variant} onClose={onClose} dismissible={dismissible}>
+      <Alert.Heading>You got an error!</Alert.Heading>
+      <p>{message}</p>
+    </Alert>
   );
+  // return <Button onClick={handleOpen}>Show Alert</Button>;
 }

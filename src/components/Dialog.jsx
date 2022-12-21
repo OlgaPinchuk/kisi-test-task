@@ -22,8 +22,12 @@ export default function Dialog({
     setShow(false);
   };
 
-  const handleSave = () => {
-    onSave();
+  const handleSave = async () => {
+    const success = await onSave();
+    if (success === false) {
+      setShow(true);
+      return;
+    }
     setShow(false);
   };
 
