@@ -11,6 +11,7 @@ export default function Dialog({
   onClose,
   okLabel,
   cancelLabel,
+  disabled,
 }) {
   const [show, setShow] = useState(false);
 
@@ -40,7 +41,7 @@ export default function Dialog({
           <Button variant="secondary" onClick={handleClose}>
             {cancelLabel}
           </Button>
-          <Button variant="primary" onClick={handleSave}>
+          <Button variant="primary" onClick={handleSave} disabled={disabled}>
             {okLabel}
           </Button>
         </Modal.Footer>

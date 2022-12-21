@@ -1,26 +1,23 @@
 import { useState, useContext } from "react";
-import Button from "react-bootstrap/Button";
 
-import { GroupsContext } from "../global/context";
 import Dialog from "./Dialog";
 
-export function AddGroup() {
+import { GroupsContext } from "../global/context";
+
+export function AddGroup({ offset }) {
   const groupsData = useContext(GroupsContext);
   const [newGroup, setNewGroup] = useState("");
-  const [error, setError] = useState(false);
 
   // Methods
   async function handleGroupSave() {
-    try {
-      await groupsData.createGroup({
-        name: newGroup,
-        place_id: null,
-      });
-      setNewGroup("");
-    } catch (err) {
-      setError(true);
-      console.error(err);
+    const resp = await groupsData.createGroup({
+      name: newGroup,
+      place_id: null,
+    });
+    if (resp) {
+      await groupsData.fetchGroups(offset);
     }
+    setNewGroup("");
   }
 
   function handleDialogClose() {
@@ -35,6 +32,7 @@ export function AddGroup() {
       buttonTitle="Add new"
       okLabel="Save"
       cancelLabel="Close"
+      disabled={!newGroup}
     >
       <input
         type="text"

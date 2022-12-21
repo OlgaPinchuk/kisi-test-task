@@ -1,24 +1,19 @@
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useContext } from "react";
+
+import GroupsList from "../components/GroupsList";
+import PaginationComponent from "../components/PaginationComponent";
+import { AddGroup } from "../components/AddGroup";
 
 import { GroupsContext } from "../global/context";
-import GroupsList from "../components/GroupsList";
-import PaginationComponent from "../components/Pagination";
-import { AddGroup } from "../components/AddGroup";
 
 export default function GroupsPage() {
   const groupsData = useContext(GroupsContext);
-  console.log({ groupsData });
-  const { groups, pagination } = groupsData;
 
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+  const { groups, pagination, offset } = groupsData;
 
   useEffect(() => {
-    if (!groups.length) groupsData.fetchGroups();
-  }, [groups, currentPage]);
+    groupsData.fetchGroups(offset);
+  }, [offset]);
 
   return (
     <div className="m-4">
@@ -33,28 +28,12 @@ export default function GroupsPage() {
           />
         </div>
       </div>
-      <AddGroup />
+      <AddGroup offset={offset} />
       <GroupsList groups={groups} />
       <PaginationComponent
-        total={80}
-        itemsPerPage={groups.length}
-        currentPage={currentPage}
-        onPageChange={handlePageChange}
+        total={pagination.count}
+        itemsPerPage={pagination.limit}
       />
-
-      {/* <nav className="mt-3" aria-label="Page navigation">
-        <ul className="pagination">
-          <li className="page-item">
-            <button className="page-link">Previous</button>
-          </li>
-          <li className="page-item">
-            <div className="page-link">1</div>
-          </li>
-          <li className="page-item">
-            <button className="page-link">Next</button>
-          </li>
-        </ul>
-      </nav> */}
     </div>
   );
 }

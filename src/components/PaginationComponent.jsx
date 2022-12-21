@@ -1,22 +1,23 @@
-import { useEffect, useState, useMemo } from "react";
+import { useMemo, useContext } from "react";
 
 import Pagination from "react-bootstrap/Pagination";
+import { GroupsContext } from "../global/context";
 
-function PaginationComponent(props) {
-  const { onPageChange, total, itemsPerPage, currentPage } = props;
-  const [totalPages, setTotalPages] = useState(0);
+export default function PaginationComponent({ total, itemsPerPage }) {
+  const groupsData = useContext(GroupsContext);
+  const { currentPage } = groupsData;
 
-  useEffect(() => {
-    if (total > 0 && itemsPerPage > 0)
-      setTotalPages(Math.ceil(total / itemsPerPage));
-  }, [total, itemsPerPage]);
+  const totalPages = useMemo(
+    () => (total > 0 && itemsPerPage > 0 ? Math.ceil(total / itemsPerPage) : 0),
+    [itemsPerPage, total]
+  );
 
   const createPaginationItem = (i) => {
     return (
       <Pagination.Item
         key={i}
         active={i === currentPage}
-        onClick={() => onPageChange(i)}
+        onClick={() => groupsData.setCurrentPage(i)}
       >
         {i}
       </Pagination.Item>
@@ -42,23 +43,21 @@ function PaginationComponent(props) {
 
     pages.push(createPaginationItem(totalPages));
     return pages;
-  }, [totalPages]);
+  }, [totalPages, currentPage]);
 
   if (totalPages === 0) return null;
 
   return (
     <Pagination>
       <Pagination.Prev
-        onClick={() => onPageChange(currentPage - 1)}
+        onClick={() => groupsData.setCurrentPage(currentPage - 1)}
         disabled={currentPage === 1}
       />
       {paginationItems}
       <Pagination.Next
-        onClick={() => onPageChange(currentPage + 1)}
+        onClick={() => groupsData.setCurrentPage(currentPage + 1)}
         disabled={currentPage === totalPages}
       />
     </Pagination>
   );
 }
-
-export default PaginationComponent;
