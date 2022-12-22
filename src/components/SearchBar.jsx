@@ -1,9 +1,11 @@
+import Form from "react-bootstrap/Form";
+
 export function SearchBar({ onSearch, placeholder }) {
   return (
-    <input
+    <Form.Control
       type="text"
-      className="form-control mb-3"
-      id="exampleFormControlInput1"
+      className="mb-3"
+      id="searchBarControl"
       placeholder={placeholder}
       onChange={(e) => onSearch(e)}
     />

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
+import ListGroup from "react-bootstrap/ListGroup";
 
 import { CustomModal } from "./CustomModal";
 
@@ -31,21 +32,22 @@ export function GroupsList({ groups, onDelete }) {
       >
         {<p>Are you sure you want to delete this group?</p>}
       </CustomModal>
-      <ul className="list-group mt-2">
+
+      <ListGroup className="mt-2">
         {groups.map((item) => (
-          <li
+          <ListGroup.Item
             key={item.id}
-            className="list-group-item d-flex justify-content-between"
+            className="d-flex justify-content-between"
           >
-            <div>{item.name}</div>
+            {item.name}
             <Button
               className=" bi bi-trash"
               variant="outline-danger"
               onClick={() => handleClickDelete(item.id)}
             />
-          </li>
+          </ListGroup.Item>
         ))}
-      </ul>
+      </ListGroup>
     </>
   );
 }

@@ -1,6 +1,7 @@
 import { useState, useContext } from "react";
 import Alert from "react-bootstrap/Alert";
 import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
 
 import { CustomModal } from "./CustomModal";
 
@@ -58,9 +59,10 @@ export function AddGroup() {
         cancelLabel="Close"
         disabled={!newGroup}
       >
-        <input
+        <Form.Control
           type="text"
           value={newGroup}
+          placeholder="Group name"
           onChange={(e) => setNewGroup(e.target.value)}
           autoFocus
         />
