@@ -1,6 +1,9 @@
 import { useEffect, useContext, useRef } from "react";
 import { debounce } from "lodash";
 import Spinner from "react-bootstrap/Spinner";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 
 import {
   AddGroup,
@@ -42,10 +45,16 @@ export default function GroupsPage() {
   }
 
   return (
-    <div className="m-4">
+    <Container className="m-4" fluid="SM">
       <h4 className="mb-3">Groups</h4>
-      <SearchBar placeholder="Search Group" onSearch={handleSearch} />
-      <AddGroup />
+      <Row>
+        <Col>
+          <SearchBar placeholder="Search Group" onSearch={handleSearch} />
+        </Col>
+        <Col md="auto">
+          <AddGroup />
+        </Col>
+      </Row>
 
       {loading ? (
         <div className="d-flex p-2 justify-content-center m-5 ">
@@ -60,6 +69,6 @@ export default function GroupsPage() {
           />
         </>
       )}
-    </div>
+    </Container>
   );
 }

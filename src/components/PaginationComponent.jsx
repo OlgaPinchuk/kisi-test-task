@@ -48,7 +48,7 @@ export function PaginationComponent({ total, itemsPerPage }) {
   if (totalPages === 0) return null;
 
   return (
-    <Pagination>
+    <Pagination className="mt-2">
       <Pagination.Prev
         onClick={() => groupsData.setCurrentPage(currentPage - 1)}
         disabled={currentPage === 1}
