@@ -20,6 +20,11 @@ export const reducer = (state, action) => {
         ...state,
         currentPage: action.payload.page,
       };
+    case actions.SET_SEARCH_QUERY:
+      return {
+        ...state,
+        searchQuery: action.searchQuery,
+      };
     case actions.DELETE_GROUP:
       return {
         ...state,

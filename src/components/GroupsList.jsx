@@ -9,7 +9,10 @@ export default function GroupsList({ groups, onDelete }) {
           className="list-group-item d-flex justify-content-between"
         >
           <div>{item.name}</div>
-          <button className="btn btn-outline-danger" onClick={onDelete}>
+          <button
+            className="btn btn-outline-danger"
+            onClick={() => onDelete(item.id)}
+          >
             <i className="bi bi-trash"></i>
           </button>
         </li>

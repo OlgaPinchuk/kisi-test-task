@@ -8,13 +8,23 @@ client.setLoginSecret("371199d7e81182c0879fd91b0d45e96c");
 
 export const PAGINATION_LIMIT = 10;
 
-const fetchGroups = async (offset = 0) => {
+export const fetchGroups = async (options) => {
   const data = await client.get(GROUPS_PATH, {
     limit: PAGINATION_LIMIT,
-    offset,
+    ...options,
   });
   return data;
 };
+
+// the same as fetchGroups
+
+// const searchGroups = async (options) => {
+//   const data = await client.get(GROUPS_PATH, {
+//     limit: PAGINATION_LIMIT,
+//     ...options,
+//   });
+//   return data;
+// };
 
 const createGroup = async (group) => {
   const data = await client.post(GROUPS_PATH, group);
@@ -35,9 +45,10 @@ const logIn = async (domain, email, password) => {
 };
 
 const API = {
+  logIn,
   fetchGroups,
+  // searchGroups,
   createGroup,
   deleteGroup,
-  logIn,
 };
 export default API;

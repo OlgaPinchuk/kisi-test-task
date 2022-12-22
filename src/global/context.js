@@ -9,6 +9,7 @@ const initialState = {
   groups: [],
   pagination: {},
   errorMessage: "",
+  searchQuery: "",
   loading: false,
   offset: 0,
   currentPage: 1,
@@ -18,7 +19,14 @@ export const GroupsContext = createContext();
 
 export const GroupsProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { groups, pagination, loading, errorMessage, currentPage } = state;
+  const {
+    groups,
+    pagination,
+    loading,
+    errorMessage,
+    currentPage,
+    searchQuery,
+  } = state;
 
   const value = useMemo(() => {
     return {
@@ -27,13 +35,33 @@ export const GroupsProvider = ({ children }) => {
       currentPage,
       loading,
       errorMessage,
-      setGroups: (data) => {
+      searchQuery,
+
+      setGroups(data) {
         dispatch({ type: actions.SET_GROUPS, data });
       },
-      async fetchGroups(offset) {
+      async fetchGroups(options) {
         try {
           dispatch({ type: actions.SET_LOADING });
-          const data = await API.fetchGroups(offset);
+          const data = await API.fetchGroups({ ...options });
+          this.setGroups(data);
+          return data;
+        } catch (e) {
+          console.error(e);
+        }
+      },
+      async searchGroups(query) {
+        try {
+          dispatch({ type: actions.SET_LOADING });
+          dispatch({
+            type: actions.SET_SEARCH_QUERY,
+            searchQuery: query,
+          });
+          const newOffset = calculatePaginationOffset(currentPage);
+          const data = await this.fetchGroups({
+            ...newOffset, // ????
+            query,
+          });
           this.setGroups(data);
         } catch (e) {
           console.error(e);
@@ -43,7 +71,11 @@ export const GroupsProvider = ({ children }) => {
         try {
           dispatch({ type: actions.SET_LOADING });
           const response = await API.createGroup(group);
-          this.fetchGroups(calculatePaginationOffset(currentPage));
+          const newOffset = calculatePaginationOffset(currentPage);
+          this.fetchGroups({
+            ...newOffset, // ????
+            query: searchQuery,
+          });
           return response;
         } catch (e) {
           dispatch({ type: actions.SET_ERROR, errorMessage: e.reason });
@@ -53,7 +85,12 @@ export const GroupsProvider = ({ children }) => {
       async setCurrentPage(page) {
         try {
           dispatch({ type: actions.SET_LOADING });
-          this.fetchGroups(calculatePaginationOffset(page));
+          const newOffset = calculatePaginationOffset(page);
+
+          await this.fetchGroups({
+            ...newOffset, // ????
+            query: searchQuery,
+          });
           dispatch({ type: actions.SET_PAGE, payload: { page } });
         } catch (e) {
           // dispatch({ type: actions.SET_ERROR, errorMessage: e.reason });
@@ -62,8 +99,20 @@ export const GroupsProvider = ({ children }) => {
       setError(errorMessage) {
         dispatch({ type: actions.SET_ERROR, errorMessage });
       },
-      deleteGroup: (data) => {
-        dispatch({ type: actions.DELETE_GROUP, id: data.groupId });
+      async deleteGroup(id) {
+        try {
+          dispatch({ type: actions.SET_LOADING });
+          const response = await API.deleteGroup(id);
+          const newOffset = calculatePaginationOffset(currentPage);
+          this.fetchGroups({
+            ...newOffset, // ????
+            query: searchQuery,
+          });
+          return response;
+        } catch (e) {
+          dispatch({ type: actions.SET_ERROR, errorMessage: e.reason });
+          return;
+        }
       },
     };
   }, [groups, pagination, currentPage, loading, errorMessage]);

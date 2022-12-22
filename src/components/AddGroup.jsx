@@ -5,9 +5,12 @@ import Dialog from "./Dialog";
 
 import { GroupsContext } from "../global/context";
 
-export function AddGroup({ offset }) {
+export function AddGroup() {
+  // State
   const groupsData = useContext(GroupsContext);
-  const { errorMessage } = groupsData;
+  const { errorMessage, pagination, searchQuery } = groupsData;
+  const { offset } = pagination;
+
   const [newGroup, setNewGroup] = useState("");
   const [showErrorAlert, setShowErrorAlert] = useState(false);
 
@@ -18,7 +21,7 @@ export function AddGroup({ offset }) {
       place_id: null,
     });
     if (response) {
-      await groupsData.fetchGroups(offset);
+      await groupsData.fetchGroups({ offset, query: searchQuery });
       setNewGroup("");
     } else {
       setShowErrorAlert(true);
@@ -27,7 +30,8 @@ export function AddGroup({ offset }) {
   }
 
   async function handleDialogClose() {
-    await groupsData.setError("");
+    groupsData.setError("");
+    await groupsData.fetchGroups({ offset, query: searchQuery });
     setShowErrorAlert(false);
     setNewGroup("");
   }

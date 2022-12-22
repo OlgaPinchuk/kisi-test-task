@@ -1,5 +1,6 @@
 import { PAGINATION_LIMIT } from "./client";
 
 export const calculatePaginationOffset = (pageNumber) => {
-  return PAGINATION_LIMIT * (pageNumber - 1);
+  const offset = PAGINATION_LIMIT * (pageNumber - 1);
+  return { offset };
 };
