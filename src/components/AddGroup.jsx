@@ -46,7 +46,7 @@ export function AddGroup() {
   return (
     <>
       <Button variant="primary" onClick={handleShow}>
-        <p>Add new group</p>
+        Add new group
       </Button>
 
       <CustomModal
