@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import Alert from "react-bootstrap/Alert";
 
-import Dialog from "./Dialog";
+import { Dialog } from "./Dialog";
 
 import { GroupsContext } from "../global/context";
 
@@ -38,7 +38,7 @@ export function AddGroup() {
 
   return (
     <Dialog
-      onSave={handleGroupSave}
+      onConfirm={handleGroupSave}
       onClose={handleDialogClose}
       show={showErrorAlert}
       title="Add new group"

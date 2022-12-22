@@ -1,4 +1,4 @@
-export default function SearchBar({ onSearch, placeholder }) {
+export function SearchBar({ onSearch, placeholder }) {
   return (
     <div className="d-flex justify-content-between mb-3">
       <div className="col-9">

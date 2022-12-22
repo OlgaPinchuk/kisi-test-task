@@ -2,10 +2,12 @@ import { useEffect, useContext, useRef } from "react";
 import { debounce } from "lodash";
 import Spinner from "react-bootstrap/Spinner";
 
-import GroupsList from "../components/GroupsList";
-import PaginationComponent from "../components/PaginationComponent";
-import { AddGroup } from "../components/AddGroup";
-import SearchBar from "../components/SearchBar";
+import {
+  AddGroup,
+  GroupsList,
+  PaginationComponent,
+  SearchBar,
+} from "../components";
 
 import { GroupsContext } from "../global/context";
 
@@ -36,7 +38,7 @@ export default function GroupsPage() {
   }
 
   async function handleDelete(id) {
-    const data = await groupsData.deleteGroup(id);
+    await groupsData.deleteGroup(id);
   }
 
   return (

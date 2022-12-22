@@ -3,7 +3,7 @@ import { useMemo, useContext } from "react";
 import Pagination from "react-bootstrap/Pagination";
 import { GroupsContext } from "../global/context";
 
-export default function PaginationComponent({ total, itemsPerPage }) {
+export function PaginationComponent({ total, itemsPerPage }) {
   const groupsData = useContext(GroupsContext);
   const { currentPage } = groupsData;
 

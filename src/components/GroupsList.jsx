@@ -1,22 +1,51 @@
-export default function GroupsList({ groups, onDelete }) {
+import { useState } from "react";
+import Button from "react-bootstrap/Button";
+
+import { CustomModal } from "./CustomModal";
+
+export function GroupsList({ groups, onDelete }) {
   if (!groups.length) return null;
 
+  const [show, setShow] = useState(false);
+  const [deleteId, setDeleteId] = useState(null);
+
+  // Methods
+  function handleClickDelete(id) {
+    setShow(true);
+    setDeleteId(id);
+  }
+
+  function handleCancel() {
+    setShow(false);
+  }
+
   return (
-    <ul className="list-group mt-2">
-      {groups.map((item) => (
-        <li
-          key={item.id}
-          className="list-group-item d-flex justify-content-between"
-        >
-          <div>{item.name}</div>
-          <button
-            className="btn btn-outline-danger"
-            onClick={() => onDelete(item.id)}
+    <>
+      <CustomModal
+        onConfirm={() => onDelete(deleteId)}
+        onClose={handleCancel}
+        show={show}
+        title="Delete a group"
+        okLabel="Delete"
+        cancelLabel="Close"
+      >
+        {<p>Are you sure you want to delete this group?</p>}
+      </CustomModal>
+      <ul className="list-group mt-2">
+        {groups.map((item) => (
+          <li
+            key={item.id}
+            className="list-group-item d-flex justify-content-between"
           >
-            <i className="bi bi-trash"></i>
-          </button>
-        </li>
-      ))}
-    </ul>
+            <div>{item.name}</div>
+            <Button
+              className=" bi bi-trash"
+              variant="outline-danger"
+              onClick={() => handleClickDelete(item.id)}
+            />
+          </li>
+        ))}
+      </ul>
+    </>
   );
 }
