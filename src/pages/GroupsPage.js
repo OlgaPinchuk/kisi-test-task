@@ -17,7 +17,7 @@ import { GroupsContext } from "../context";
 export default function GroupsPage() {
   // State
   const groupsData = useContext(GroupsContext);
-  const { groups, pagination, loading } = groupsData;
+  const { groups, pagination, loading, errorMessage } = groupsData;
 
   const debouncedSearch = useRef(
     debounce(async (query) => {
@@ -42,6 +42,16 @@ export default function GroupsPage() {
 
   async function handleDelete(id) {
     await groupsData.deleteGroup(id);
+  }
+
+  if (
+    errorMessage === "The endpoint does not exist, please check your request."
+  ) {
+    return (
+      <div className="d-flex p-2 justify-content-center m-5 alert alert-danger">
+        <h2>Oops! We got an error. Please try again later</h2>
+      </div>
+    );
   }
 
   return (

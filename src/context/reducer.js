@@ -13,7 +13,7 @@ export const reducer = (state, action) => {
     case actions.SET_LOADING:
       return {
         ...state,
-        loading: true,
+        loading: action.loading,
       };
     case actions.SET_PAGE:
       return {

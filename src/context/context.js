@@ -45,20 +45,25 @@ export const GroupsProvider = ({ children }) => {
       },
       async fetchGroups(options) {
         try {
-          dispatch({ type: actions.SET_LOADING });
+          dispatch({ type: actions.SET_LOADING, loading: true });
           const data = await API.fetchGroups({ ...options });
           this.setGroups(data);
           return data;
         } catch (e) {
-          console.error(e);
+          dispatch({ type: actions.SET_LOADING, loading: false });
+          this.setError(e.reason);
         }
       },
       async searchGroups(query) {
         try {
-          dispatch({ type: actions.SET_LOADING });
+          dispatch({ type: actions.SET_LOADING, loading: true });
           dispatch({
             type: actions.SET_SEARCH_QUERY,
             searchQuery: query,
+          });
+          dispatch({
+            type: actions.SET_PAGE,
+            payload: { page: 1 },
           });
           const newOffset = calculatePaginationOffset(currentPage);
           const options = { ...newOffset, query };
@@ -70,7 +75,7 @@ export const GroupsProvider = ({ children }) => {
       },
       async createGroup(group) {
         try {
-          dispatch({ type: actions.SET_LOADING });
+          dispatch({ type: actions.SET_LOADING, loading: true });
           const response = await API.createGroup(group);
           const newOffset = calculatePaginationOffset(currentPage);
           const options = {
@@ -80,13 +85,13 @@ export const GroupsProvider = ({ children }) => {
           this.fetchGroups(options);
           return response;
         } catch (e) {
-          dispatch({ type: actions.SET_ERROR, errorMessage: e.reason });
+          this.setError(e.reason);
           return;
         }
       },
       async setCurrentPage(page) {
         try {
-          dispatch({ type: actions.SET_LOADING });
+          dispatch({ type: actions.SET_LOADING, loading: true });
           const newOffset = calculatePaginationOffset(page);
           const options = { ...newOffset, query: searchQuery };
           await this.fetchGroups(options);
@@ -97,7 +102,7 @@ export const GroupsProvider = ({ children }) => {
       },
       async deleteGroup(id) {
         try {
-          dispatch({ type: actions.SET_LOADING });
+          dispatch({ type: actions.SET_LOADING, loading: true });
           const response = await API.deleteGroup(id);
           const newOffset = calculatePaginationOffset(currentPage);
           const options = {
