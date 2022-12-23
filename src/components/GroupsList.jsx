@@ -5,9 +5,6 @@ import ListGroup from "react-bootstrap/ListGroup";
 import { CustomModal } from "./CustomModal";
 
 export function GroupsList({ groups, onDelete }) {
-  if (!groups.length)
-    return <h3 className="d-flex p-2 justify-content-center m-5">No items</h3>;
-
   const [show, setShow] = useState(false);
   const [deleteId, setDeleteId] = useState(null);
 
@@ -20,6 +17,9 @@ export function GroupsList({ groups, onDelete }) {
   function handleCancel() {
     setShow(false);
   }
+
+  if (!groups.length)
+    return <h3 className="d-flex p-2 justify-content-center m-5">No items</h3>;
 
   return (
     <>

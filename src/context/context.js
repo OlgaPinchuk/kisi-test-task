@@ -112,7 +112,7 @@ export const GroupsProvider = ({ children }) => {
         }
       },
     };
-  }, [groups, pagination, currentPage, loading, errorMessage]);
+  }, [groups, pagination, currentPage, loading, errorMessage, searchQuery]);
 
   return (
     <GroupsContext.Provider value={value}>{children}</GroupsContext.Provider>
