@@ -12,7 +12,7 @@ import {
   SearchBar,
 } from "../components";
 
-import { GroupsContext } from "../global/context";
+import { GroupsContext } from "../context";
 
 export default function GroupsPage() {
   // State

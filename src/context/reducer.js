@@ -25,11 +25,6 @@ export const reducer = (state, action) => {
         ...state,
         searchQuery: action.searchQuery,
       };
-    case actions.DELETE_GROUP:
-      return {
-        ...state,
-        groups: state.groups.filter((group) => group.id !== action.id),
-      };
     case actions.SET_ERROR:
       return {
         ...state,

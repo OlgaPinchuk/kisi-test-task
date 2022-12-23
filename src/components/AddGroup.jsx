@@ -5,7 +5,7 @@ import Form from "react-bootstrap/Form";
 
 import { CustomModal } from "./CustomModal";
 
-import { GroupsContext } from "../global/context";
+import { GroupsContext } from "../context";
 
 export function AddGroup() {
   // State

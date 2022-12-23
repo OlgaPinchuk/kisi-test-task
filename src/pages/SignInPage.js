@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import css from "./SignInPage.module.css";
 import API from "../client";
 
 export default function SignInPage() {

@@ -40,6 +40,9 @@ export const GroupsProvider = ({ children }) => {
       setGroups(data) {
         dispatch({ type: actions.SET_GROUPS, data });
       },
+      setError(errorMessage) {
+        dispatch({ type: actions.SET_ERROR, errorMessage });
+      },
       async fetchGroups(options) {
         try {
           dispatch({ type: actions.SET_LOADING });
@@ -58,10 +61,8 @@ export const GroupsProvider = ({ children }) => {
             searchQuery: query,
           });
           const newOffset = calculatePaginationOffset(currentPage);
-          const data = await this.fetchGroups({
-            ...newOffset, // ????
-            query,
-          });
+          const options = { ...newOffset, query };
+          const data = await this.fetchGroups(options);
           this.setGroups(data);
         } catch (e) {
           console.error(e);
@@ -72,10 +73,11 @@ export const GroupsProvider = ({ children }) => {
           dispatch({ type: actions.SET_LOADING });
           const response = await API.createGroup(group);
           const newOffset = calculatePaginationOffset(currentPage);
-          this.fetchGroups({
-            ...newOffset, // ????
+          const options = {
+            ...newOffset,
             query: searchQuery,
-          });
+          };
+          this.fetchGroups(options);
           return response;
         } catch (e) {
           dispatch({ type: actions.SET_ERROR, errorMessage: e.reason });
@@ -86,28 +88,23 @@ export const GroupsProvider = ({ children }) => {
         try {
           dispatch({ type: actions.SET_LOADING });
           const newOffset = calculatePaginationOffset(page);
-
-          await this.fetchGroups({
-            ...newOffset, // ????
-            query: searchQuery,
-          });
+          const options = { ...newOffset, query: searchQuery };
+          await this.fetchGroups(options);
           dispatch({ type: actions.SET_PAGE, payload: { page } });
         } catch (e) {
-          // dispatch({ type: actions.SET_ERROR, errorMessage: e.reason });
+          dispatch({ type: actions.SET_ERROR, errorMessage: e.reason });
         }
-      },
-      setError(errorMessage) {
-        dispatch({ type: actions.SET_ERROR, errorMessage });
       },
       async deleteGroup(id) {
         try {
           dispatch({ type: actions.SET_LOADING });
           const response = await API.deleteGroup(id);
           const newOffset = calculatePaginationOffset(currentPage);
-          this.fetchGroups({
-            ...newOffset, // ????
+          const options = {
+            ...newOffset,
             query: searchQuery,
-          });
+          };
+          this.fetchGroups(options);
           return response;
         } catch (e) {
           dispatch({ type: actions.SET_ERROR, errorMessage: e.reason });
