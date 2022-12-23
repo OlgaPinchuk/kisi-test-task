@@ -2,9 +2,10 @@ import KisiClient from "kisi-client";
 
 const LOGIN_PATH = "logins";
 const GROUPS_PATH = "groups";
+const STORAGE_KEY = "responseKey";
 
-const client = new KisiClient(); //client.setLoginSecret(res.secret); to Localstorage??
-client.setLoginSecret("371199d7e81182c0879fd91b0d45e96c");
+const client = new KisiClient();
+client.setLoginSecret(sessionStorage.getItem(STORAGE_KEY));
 
 export const PAGINATION_LIMIT = 10;
 
@@ -15,16 +16,6 @@ export const fetchGroups = async (options) => {
   });
   return data;
 };
-
-// the same as fetchGroups
-
-// const searchGroups = async (options) => {
-//   const data = await client.get(GROUPS_PATH, {
-//     limit: PAGINATION_LIMIT,
-//     ...options,
-//   });
-//   return data;
-// };
 
 const createGroup = async (group) => {
   const data = await client.post(GROUPS_PATH, group);
@@ -37,17 +28,18 @@ const deleteGroup = async (id) => {
 };
 
 const logIn = async (domain, email, password) => {
-  const res = await client.post(LOGIN_PATH, {
+  const response = await client.post(LOGIN_PATH, {
     user: { domain, email, password },
     login: { type: "device" },
   });
-  client.setLoginSecret(res.secret);
+  const { secret } = response;
+  client.setLoginSecret(secret);
+  sessionStorage.setItem(STORAGE_KEY, secret);
 };
 
 const API = {
   logIn,
   fetchGroups,
-  // searchGroups,
   createGroup,
   deleteGroup,
 };

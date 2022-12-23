@@ -14,7 +14,6 @@ export default function SignInPage() {
     e.preventDefault();
     try {
       await API.logIn(domain, email, password);
-
       navigate("/groups");
     } catch (err) {
       setError(true);

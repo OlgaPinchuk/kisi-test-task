@@ -13,7 +13,7 @@ export const reducer = (state, action) => {
     case actions.SET_LOADING:
       return {
         ...state,
-        loading: true, //  show spinner to block ui
+        loading: true,
       };
     case actions.SET_PAGE:
       return {
