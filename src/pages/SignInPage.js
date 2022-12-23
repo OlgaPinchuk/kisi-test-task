@@ -22,7 +22,7 @@ export default function SignInPage() {
   return (
     <div>
       <h3 className="mt-4 mb-4">Sign In for Kisi Test Task</h3>
-      <form className={css.form} onSubmit={onSubmit}>
+      <form onSubmit={onSubmit}>
         <div className="mb-3">
           <label htmlFor="formDomain" className="form-label">
             Organization Domain
